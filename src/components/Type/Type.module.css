@@ -1,0 +1,11 @@
+.type {
+  text-transform: uppercase;
+  width: fit-content;
+  margin: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.8;
+  color: black;
+}
