@@ -1,0 +1,71 @@
+.card {
+  min-width: 20%;
+  margin: 2rem;
+  background-color: white;
+  border: 1px black solid;
+  border-radius: 10px;
+  text-align: center;
+
+  flex: 0.5;
+  min-width: 20%;
+  /* margin: 10px;
+  margin-top: 60px;
+  padding-top: 40px; */
+  position: relative;
+  cursor: pointer;
+  border: 2px solid white;
+  transition-duration: 100ms;
+}
+
+.card:hover .cardImg {
+  transform: scale(1.15);
+}
+
+.card:hover {
+  border: 2px solid #e0e0e0;
+}
+
+.container {
+  border-radius: 20px;
+  box-shadow: #ededed 0 10px 10px;
+  padding: 15px;
+  background-color: white;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardImg {
+  top: -55px;
+  image-rendering: pixelated;
+  position: absolute;
+  transition-duration: 100ms;
+}
+
+.cardTitle {
+  font-size: 1.17em;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.cardTitle:first-letter {
+  text-transform: uppercase;
+}
+
+.types {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.idPokemon {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #8f9396;
+  margin: 24px 0 20px 0;
+}

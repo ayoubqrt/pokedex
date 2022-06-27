@@ -1,0 +1,9 @@
+.app {
+  height: 100%;
+  width: 100%;
+  background-color: #f6f8fc;
+  background-image: url("../public/pokeball-icon.png");
+  background-repeat: no-repeat;
+  background-position-x: -180px;
+  background-position-y: -80px;
+}
