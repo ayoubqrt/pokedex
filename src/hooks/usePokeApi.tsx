@@ -9,15 +9,35 @@ export interface BasicPokemon {
   types: Type[];
 }
 
+const getIdFromUrl = (url: string) => {
+  const urlSplitted = url.split("/");
+  const id = urlSplitted[urlSplitted.length - 2];
+
+  return id;
+};
+
 const urlPicture =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
 
-export const getPokemonDetail = async (id: string) => {
-  const pokemon = await P.getPokemonByName(id);
+export const getPokemonDetails = async (id: string) => {
+  const pokemons = await P.getPokemonByName(id);
+  const pokemon = castAsSingle(pokemons);
 
-  await new Promise((resolve) => setTimeout(resolve, 400));
+  const idSpecies = getIdFromUrl(pokemon.species.url);
+  const species = await P.getPokemonSpeciesByName(idSpecies);
+  const speciesData = castAsSingle(species);
 
-  return castAsSingle(pokemon);
+  const idEvolutionChain = getIdFromUrl(speciesData.evolution_chain.url);
+  const evolutionChain = await P.getEvolutionChainById(
+    parseInt(idEvolutionChain)
+  );
+  const evolutionChainData = castAsSingle(evolutionChain);
+
+  return {
+    pokemon,
+    species: speciesData,
+    evolutionChain: evolutionChainData,
+  };
 };
 
 const getPokemons = async () => {
@@ -44,8 +64,7 @@ export const getPokemonsWithTypes = async (): Promise<BasicPokemon[]> => {
   );
 
   const pokemonsWithTypes = pokemons.results.map((pokemon) => {
-    const urlSplitted = pokemon.url.split("/");
-    const id = urlSplitted[urlSplitted.length - 2];
+    const id = getIdFromUrl(pokemon.url);
 
     const pokemonWithTypes = {
       ...pokemon,

@@ -1,6 +1,21 @@
 .pokemons {
   display: flex;
+  text-align: center;
+  justify-content: center;
   flex-flow: wrap row;
   flex: 2;
   margin-right: 20px;
+}
+
+.loadingBall {
+  animation: rotate infinite 1s ease-in-out;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

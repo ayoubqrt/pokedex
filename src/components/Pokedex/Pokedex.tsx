@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { PokemonCard } from "@components/PokemonCard/PokemonCard";
-import { Filter } from "@components/Filter/Filter";
+import { Filter, FilterType } from "@components/Filter/Filter";
 import { BasicPokemon, getPokemonsWithTypes } from "@hooks/usePokeApi";
 import styles from "./Pokedex.module.css";
 import { PokemonDetail } from "@components/PokemonDetail/PokemonDetail";
@@ -12,7 +12,7 @@ export const Pokedex: NextPage = () => {
   const [filteredPokemons, setfilteredPokemons] = useState<
     BasicPokemon[] | undefined
   >([]);
-  const [selectedType, setSelectedType] = useState<string>("");
+  const [selectedType, setSelectedType] = useState<FilterType>("all");
   const [selectedPokemon, setSelectedPokemon] = useState<BasicPokemon | null>(
     null
   );

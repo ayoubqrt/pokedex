@@ -14,6 +14,8 @@
   top: 20px;
   height: calc(100vh - 40px);
   box-shadow: 0 0 10px #ccc9c9;
+  text-align: center;
+  padding: 40px;
 }
 
 .justifyCenter {

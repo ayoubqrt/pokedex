@@ -1,9 +1,11 @@
 import { PokemonCard } from "@components/PokemonCard/PokemonCard";
 import { BasicPokemon, getPokemonsWithTypes } from "@hooks/usePokeApi";
 import { usePokemons } from "@hooks/usePokemons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import styles from "./Pokemons.module.css";
+import Image from "next/image";
+import { FilterType } from "@components/Filter/Filter";
 
 interface IPokemonsProps {
   pokemonsType: string;
@@ -21,33 +23,51 @@ export const Pokemons: React.FC<IPokemonsProps> = ({
     isSuccess,
   } = useQuery(["pokemons"], getPokemonsWithTypes);
 
-  // const pokemons = usePokemons();
+  const [filteredPokemons, setfilteredPokemons] = useState<
+    BasicPokemon[] | undefined
+  >(pokemons);
 
-  const filterByType = (type: string) => {
+  useEffect(() => {
+    if (!pokemons) return;
+    filterByType(pokemonsType);
+  }, [pokemonsType]);
+
+  useEffect(() => {
+    if (!pokemons) return;
+    setfilteredPokemons(pokemons);
+  }, [pokemons]);
+
+  const filterByType = (type: FilterType) => {
+    if (type === "all") {
+      setfilteredPokemons(pokemons);
+      return;
+    }
+
     const pokemonsFilteredByType = pokemons?.filter((pokemon) => {
       return pokemon.types.some((t) => t.name === type);
     });
 
-    // setfilteredPokemons(pokemonsFilteredByType);
+    setfilteredPokemons(pokemonsFilteredByType);
   };
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!isSuccess) {
-    return <div>Error</div>;
-  }
 
   return (
     <div className={styles.pokemons}>
-      {pokemons.slice(390, 410).map((pokemon) => (
-        <PokemonCard
-          onClick={() => onClick(pokemon)}
-          key={pokemon.id}
-          pokemon={pokemon}
+      {isLoading ? (
+        <Image
+          width={300}
+          height={300}
+          className={styles.loadingBall}
+          src={"/pokeball.png"}
         />
-      ))}
+      ) : (
+        filteredPokemons?.map((pokemon) => (
+          <PokemonCard
+            onClick={() => onClick(pokemon)}
+            key={pokemon.id}
+            pokemon={pokemon}
+          />
+        ))
+      )}
     </div>
   );
 };

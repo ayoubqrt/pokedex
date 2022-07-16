@@ -32,13 +32,11 @@ export const Type: React.FC<ITypeProps> = ({ type }) => {
   };
 
   return (
-    <div className="type-container">
-      <div
-        className={styles.type}
-        style={{ backgroundColor: getBackgroundColor(type) }}
-      >
-        {type}
-      </div>
+    <div
+      className={styles.type}
+      style={{ backgroundColor: getBackgroundColor(type) }}
+    >
+      {type}
     </div>
   );
 };
