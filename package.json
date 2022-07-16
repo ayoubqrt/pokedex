@@ -9,6 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.2.4",
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@vanilla-extract/babel-plugin": "^1.1.7",
+    "@vanilla-extract/css": "^1.7.2",
+    "@vanilla-extract/next-plugin": "^2.0.2",
+    "@vanilla-extract/sprinkles": "^1.4.1",
+    "framer-motion": "^6.5.1",
     "next": "12.1.6",
     "pokedex-promise-v2": "^4.0.0",
     "react": "18.2.0",
