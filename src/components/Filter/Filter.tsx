@@ -27,7 +27,7 @@ const types = [
   "fairy",
 ];
 
-type FilterType = typeof types[number];
+export type FilterType = typeof types[number];
 
 export const Filter: React.FC<IFilterProps> = ({ onChange }) => {
   const [selectedFilter, setSelectedFilter] = useState("");
