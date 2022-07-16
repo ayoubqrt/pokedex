@@ -1,23 +1,21 @@
 .card {
-  min-width: 20%;
-  margin: 2rem;
+  min-width: 25%;
+  margin: 0.7rem;
   background-color: white;
-  border: 1px black solid;
   border-radius: 10px;
   text-align: center;
+  padding: 10px;
 
-  flex: 0.5;
-  min-width: 20%;
-  /* margin: 10px;
-  margin-top: 60px;
-  padding-top: 40px; */
+  flex: 1;
   position: relative;
   cursor: pointer;
   border: 2px solid white;
   transition-duration: 100ms;
+  margin-bottom: 4em;
+  padding-top: 45px;
 }
 
-.card:hover .cardImg {
+.card:hover .pokemonImg {
   transform: scale(1.15);
 }
 
@@ -28,7 +26,6 @@
 .container {
   border-radius: 20px;
   box-shadow: #ededed 0 10px 10px;
-  padding: 15px;
   background-color: white;
 }
 
@@ -39,7 +36,7 @@
   align-items: center;
 }
 
-.cardImg {
+.pokemonImg {
   top: -55px;
   image-rendering: pixelated;
   position: absolute;
@@ -67,5 +64,4 @@
   font-size: 0.8rem;
   font-weight: bold;
   color: #8f9396;
-  margin: 24px 0 20px 0;
 }

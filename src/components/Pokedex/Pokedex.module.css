@@ -1,11 +1,10 @@
-.pokemons {
+.container {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  padding: 20px 10vw;
 }
 
-.home {
+.header {
   display: flex;
   flex-direction: column;
+  margin-bottom: 60px;
 }

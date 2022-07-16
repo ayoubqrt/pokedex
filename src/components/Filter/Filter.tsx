@@ -29,13 +29,13 @@ const types = [
 
 type FilterType = typeof types[number];
 
-export const Filter = (props: IFilterProps) => {
+export const Filter: React.FC<IFilterProps> = ({ onChange }) => {
   const [selectedFilter, setSelectedFilter] = useState("");
   const [options, setOptions] = useState<string[]>([]);
 
   const handleChange = (selectedFilter: FilterType) => {
     setSelectedFilter(selectedFilter);
-    props.onChange(selectedFilter);
+    onChange(selectedFilter);
   };
 
   return (

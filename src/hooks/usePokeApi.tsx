@@ -11,16 +11,20 @@ export interface BasicPokemon {
 const urlPicture =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
 
+export const getPokemonDetail = async (id: string) => {
+  const pokemon = await P.getPokemonByName(id);
+
+  return pokemon;
+};
+
 const getPokemons = async () => {
   const pokemons = await P.getPokemonsList();
-  console.log(pokemons);
 
   return pokemons;
 };
 
 const getTypes = async () => {
   const types = await P.getTypesList();
-  console.log(types);
 
   return types;
 };
@@ -52,8 +56,4 @@ export const getPokemonsWithTypes = async (): Promise<BasicPokemon[]> => {
   });
 
   return pokemonsWithTypes;
-};
-
-export const getPokemonDetail = (name: string) => {
-  return P.getPokemonByName(name);
 };

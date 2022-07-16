@@ -1,8 +1,8 @@
+import { Pokedex } from "@components/Pokedex/Pokedex";
 import type { NextPage } from "next";
-import Pokedex from "@components/Pokedex/Pokedex";
 import styles from "./index.module.css";
 
-const Home: NextPage = () => {
+const App: NextPage = () => {
   return (
     <div className={styles.app}>
       <Pokedex />
@@ -10,4 +10,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default App;

@@ -1,46 +1,33 @@
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { Card } from "@components/Card/Card";
+import { PokemonCard } from "@components/PokemonCard/PokemonCard";
 import { Filter } from "@components/Filter/Filter";
 import { BasicPokemon, getPokemonsWithTypes } from "@hooks/usePokeApi";
 import styles from "./Pokedex.module.css";
+import { PokemonDetail } from "@components/PokemonDetail/PokemonDetail";
+import { usePokemons } from "@hooks/usePokemons";
+import { Pokemons } from "@components/Pokemons/Pokemons";
 
-const Pokedex: NextPage = () => {
-  const [pokemons, setPokemons] = useState<BasicPokemon[]>([]);
-  const [filteredPokemons, setfilteredPokemons] = useState<BasicPokemon[]>([]);
-  const [typeSelected, setTypesSelected] = useState<string>("");
-
-  useEffect(() => {
-    getPokemonsWithTypes().then((pokemons) => {
-      setPokemons(pokemons);
-      setfilteredPokemons(pokemons);
-    });
-  }, []);
-
-  useEffect(() => {
-    filterByType(typeSelected);
-  }, [typeSelected]);
-
-  const filterByType = (type: string) => {
-    const pokemonsFilteredByType = pokemons.filter((pokemon) => {
-      return pokemon.types.some((t) => t.name === type);
-    });
-
-    setfilteredPokemons(pokemonsFilteredByType);
-  };
-
+export const Pokedex: NextPage = () => {
+  const [filteredPokemons, setfilteredPokemons] = useState<
+    BasicPokemon[] | undefined
+  >([]);
+  const [selectedType, setSelectedType] = useState<string>("");
+  const [selectedPokemon, setSelectedPokemon] = useState<BasicPokemon | null>(
+    null
+  );
   return (
-    <div className={styles.home}>
-      <div>
-        <Filter type="Type" onChange={(val) => setTypesSelected(val)} />
-        <div className={styles.pokemons}>
-          {filteredPokemons.slice(0, 25).map((pokemon) => {
-            return <Card key={pokemon.id} pokemon={pokemon} />;
-          })}
-        </div>
+    <>
+      <header className={styles.header}>
+        <Filter type="Type" onChange={(val) => setSelectedType(val)} />
+      </header>
+      <div className={styles.container}>
+        <Pokemons
+          pokemonsType={selectedType}
+          onClick={(pokemon) => setSelectedPokemon(pokemon)}
+        />
+        {selectedPokemon && <PokemonDetail pokemon={selectedPokemon} />}
       </div>
-    </div>
+    </>
   );
 };
-
-export default Pokedex;

@@ -1,16 +1,20 @@
 import { Type } from "@components/Type/Type";
 import type { BasicPokemon } from "@hooks/usePokeApi";
-import styles from "./Card.module.css";
+import styles from "./PokemonCard.module.css";
 
 interface ICardProps {
   pokemon: BasicPokemon;
+  onClick: () => void;
 }
 
-export const Card = ({ pokemon }: ICardProps) => {
+export const PokemonCard: React.FC<ICardProps> = ({ pokemon, onClick }) => {
   return (
-    <div className={`${styles.card} ${styles.container} ${styles.center}`}>
+    <div
+      onClick={() => onClick()}
+      className={`${styles.card} ${styles.container} ${styles.center}`}
+    >
       <img
-        className={styles.cardImg}
+        className={styles.pokemonImg}
         src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
         alt="pokemon"
       />
