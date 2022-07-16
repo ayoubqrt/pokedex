@@ -16,6 +16,10 @@
   box-shadow: 0 0 10px #ccc9c9;
 }
 
+.justifyCenter {
+  justify-content: center;
+}
+
 .img {
   height: 200px;
   image-rendering: pixelated;
@@ -64,7 +68,7 @@
 }
 
 .loadingBall {
-  animation: rotate infinite 1s linear;
+  animation: rotate infinite 1s ease-in-out;
 }
 
 @keyframes rotate {

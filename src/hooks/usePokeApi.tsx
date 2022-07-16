@@ -1,4 +1,5 @@
-import Pokedex, { Type } from "pokedex-promise-v2";
+import { castAsSingle } from "helpers";
+import Pokedex, { Pokemon, Type } from "pokedex-promise-v2";
 const P = new Pokedex();
 
 export interface BasicPokemon {
@@ -14,7 +15,9 @@ const urlPicture =
 export const getPokemonDetail = async (id: string) => {
   const pokemon = await P.getPokemonByName(id);
 
-  return pokemon;
+  await new Promise((resolve) => setTimeout(resolve, 400));
+
+  return castAsSingle(pokemon);
 };
 
 const getPokemons = async () => {
