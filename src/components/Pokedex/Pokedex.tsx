@@ -9,9 +9,6 @@ import { usePokemons } from "@hooks/usePokemons";
 import { Pokemons } from "@components/Pokemons/Pokemons";
 
 export const Pokedex: NextPage = () => {
-  const [filteredPokemons, setfilteredPokemons] = useState<
-    BasicPokemon[] | undefined
-  >([]);
   const [selectedType, setSelectedType] = useState<FilterType>("all");
   const [selectedPokemon, setSelectedPokemon] = useState<BasicPokemon | null>(
     null

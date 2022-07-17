@@ -3,7 +3,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
   flex: 1;
   background-color: white;
 
@@ -12,10 +11,12 @@
   background-color: white;
   position: sticky;
   top: 20px;
-  height: calc(100vh - 40px);
+  height: calc(100vh - 120px);
   box-shadow: 0 0 10px #ccc9c9;
   text-align: center;
   padding: 40px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .justifyCenter {
@@ -26,6 +27,7 @@
   height: 200px;
   image-rendering: pixelated;
   transition-duration: 100ms;
+  z-index: 9999;
 }
 
 .slidesOut {

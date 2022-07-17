@@ -1,5 +1,10 @@
 import { castAsSingle } from "helpers";
-import Pokedex, { Pokemon, Type } from "pokedex-promise-v2";
+import Pokedex, {
+  NamedAPIResource,
+  Pokemon,
+  StatElement,
+  Type,
+} from "pokedex-promise-v2";
 const P = new Pokedex();
 
 export interface BasicPokemon {
@@ -7,6 +12,20 @@ export interface BasicPokemon {
   name: string;
   url: string;
   types: Type[];
+}
+
+export interface PokemonEvolution {
+  pokemon: Pokemon;
+  min_level: number | "unknown";
+}
+
+export interface Species {
+  species: NamedAPIResource;
+  min_level: number | "unknown";
+}
+
+export interface EvolutionChain {
+  pokemons: Pokemon[];
 }
 
 const getIdFromUrl = (url: string) => {
@@ -20,8 +39,8 @@ const urlPicture =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
 
 export const getPokemonDetails = async (id: string) => {
-  const pokemons = await P.getPokemonByName(id);
-  const pokemon = castAsSingle(pokemons);
+  const pokemon = await getPokemon(id);
+  pokemon.stats = getAllStats(pokemon.stats);
 
   const idSpecies = getIdFromUrl(pokemon.species.url);
   const species = await P.getPokemonSpeciesByName(idSpecies);
@@ -31,13 +50,72 @@ export const getPokemonDetails = async (id: string) => {
   const evolutionChain = await P.getEvolutionChainById(
     parseInt(idEvolutionChain)
   );
+
   const evolutionChainData = castAsSingle(evolutionChain);
+  const evolution = await getEvolution(evolutionChainData);
 
   return {
     pokemon,
     species: speciesData,
-    evolutionChain: evolutionChainData,
+    evolutionChain: evolution,
   };
+};
+
+const getAllStats = (stats: StatElement[]) => {
+  const total = stats.reduce((acc, stat) => acc + stat.base_stat, 0);
+  const totalStat = {
+    base_stat: total,
+    effort: 0,
+    stat: {
+      name: "TOT",
+      url: "",
+    },
+  };
+
+  return [...stats, totalStat];
+};
+
+const getEvolution = async (
+  evolutionChain: Pokedex.EvolutionChain
+): Promise<PokemonEvolution[]> => {
+  const pokemon = castAsSingle(evolutionChain.chain.species);
+  const pokemons: Species[] = [{ species: pokemon, min_level: 1 }];
+
+  let evolves = true;
+  let nextIteration = evolutionChain.chain;
+
+  while (evolves === true) {
+    if (nextIteration.evolves_to.length > 0) {
+      pokemons.push({
+        species: nextIteration.evolves_to[0].species,
+        min_level:
+          nextIteration.evolves_to[0].evolution_details[0].min_level ??
+          "unknown",
+      });
+
+      nextIteration = nextIteration.evolves_to[0];
+    } else {
+      evolves = false;
+    }
+  }
+
+  const promises = pokemons.map((pok) => getPokemon(pok.species.name));
+  const evolutions = await Promise.all(promises);
+  const pokemonsData: PokemonEvolution[] = evolutions.map((evol) => ({
+    pokemon: evol,
+    min_level:
+      pokemons.find((pok) => pok.species.name === evol.name)?.min_level ??
+      "unknown",
+  }));
+
+  return pokemonsData;
+};
+
+const getPokemon = async (id: string) => {
+  const pokemons = await P.getPokemonByName(id);
+  const pokemon = castAsSingle(pokemons);
+
+  return pokemon;
 };
 
 const getPokemons = async () => {

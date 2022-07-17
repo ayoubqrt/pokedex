@@ -4,9 +4,10 @@ import styles from "./PokemonDetail.module.css";
 import Image from "next/image";
 import { useQuery } from "react-query";
 import { Abilities } from "@components/Abilities/Abilities";
-import { OvalStyle } from "styles/components.css";
 import { Box, Flex } from "@chakra-ui/react";
 import { Stats } from "@components/Stats/Stats";
+import { Oval } from "@components/Oval/Oval";
+import { Evolution } from "@components/Evolution/Evolution";
 
 interface IPokemonDetailProps {
   pokemon: BasicPokemon;
@@ -71,36 +72,34 @@ export const PokemonDetail: React.FC<IPokemonDetailProps> = ({ pokemon }) => {
             <Type key={type.id} type={type.name} />
           ))}
         </div>
-
         <h4>Pokedex Entry</h4>
         {description}
-
         <h4>ABILITIES</h4>
         <Abilities abilities={abilities} />
-
         <Flex w="100%" flexDir={"row"}>
           <Flex w="100%" flexDir={"column"}>
             HEIGHT
-            <Box className={OvalStyle}>
+            <Oval justifyContent="center">
               {pokemonDetails.pokemon.height / 10} m
-            </Box>
+            </Oval>
           </Flex>
           <Flex w="100%" flexDir={"column"}>
             WEIGHT
-            <Box className={OvalStyle}>
+            <Oval justifyContent="center">
               {pokemonDetails.pokemon.weight / 10} Kg
-            </Box>
+            </Oval>
           </Flex>
         </Flex>
-
         <Flex w="100%" flexDir={"column"}>
           BASE EXP
-          <Box justifyContent="center" className={OvalStyle}>
+          <Oval justifyContent="center">
             {pokemonDetails.pokemon.base_experience}
-          </Box>
+          </Oval>
         </Flex>
-
+        STATS
         <Stats stats={pokemonDetails.pokemon.stats} />
+        Evolution
+        <Evolution evolutions={pokemonDetails.evolutionChain} />
       </>
     </aside>
   );
