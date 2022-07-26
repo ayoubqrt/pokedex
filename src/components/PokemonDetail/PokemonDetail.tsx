@@ -1,5 +1,9 @@
 import { Type } from "@components/Type/Type";
-import { BasicPokemon, getPokemonDetails } from "@hooks/usePokeApi";
+import {
+  BasicPokemon,
+  getPokemonDetails,
+  PokemonDetails,
+} from "@hooks/usePokeApi";
 import styles from "./PokemonDetail.module.css";
 import Image from "next/image";
 import { useQuery } from "react-query";
@@ -8,99 +12,110 @@ import { Box, Flex } from "@chakra-ui/react";
 import { Stats } from "@components/Stats/Stats";
 import { Oval } from "@components/Oval/Oval";
 import { Evolution } from "@components/Evolution/Evolution";
+import { Pokemon, PokemonSpeciesFlavorTextEntry } from "pokedex-promise-v2";
+import { forwardRef, useContext, useEffect, useState } from "react";
+import { useMeasure, useWindowSize } from "react-use";
+import { SelectedPokemonContext } from "@components/Pokedex/Pokedex";
+import { CloseButton } from "@chakra-ui/react";
 
 interface IPokemonDetailProps {
-  pokemon: BasicPokemon;
+  pokemonDetails: PokemonDetails | undefined;
 }
 
-const urlPicture =
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white";
+const getImage = (pokemon: Pokemon, isFrontImage: boolean) => {
+  if (pokemon.id >= 650) {
+    const image = isFrontImage
+      ? pokemon.sprites.front_default
+      : pokemon.sprites.back_default;
 
-export const PokemonDetail: React.FC<IPokemonDetailProps> = ({ pokemon }) => {
-  const {
-    isLoading,
-    error,
-    data: pokemonDetails,
-    isSuccess,
-  } = useQuery(["pokemon", pokemon.id], () => getPokemonDetails(pokemon.id));
-  console.log(pokemonDetails);
+    return image ? image : pokemon.sprites.front_default ?? "pokeball.png";
+  }
 
-  const url =
-    parseInt(pokemon.id) < 650
-      ? `${urlPicture}/animated/${pokemon.id}.gif`
-      : `${urlPicture}/${pokemon.id}.png`;
+  const image = isFrontImage
+    ? pokemon.sprites.versions["generation-v"]["black-white"].animated
+        .front_default
+    : pokemon.sprites.versions["generation-v"]["black-white"].animated
+        .back_default;
 
-  const justifyCenter = isLoading ? styles.justifyCenter : "";
+  return image ? image : pokemon.sprites.front_default ?? "pokeball.png";
+};
 
-  const getFullDescription = (language: string, descriptions: any[]) => {
-    const description = descriptions.find(
-      (des) => des.language.name === language
+const getFullDescription = (
+  language: string,
+  descriptions: PokemonSpeciesFlavorTextEntry[]
+) => {
+  const description = descriptions.find(
+    (des) => des.language.name === language
+  );
+
+  return description
+    ? description.flavor_text
+    : descriptions.find((des) => des.language.name === "en")?.flavor_text;
+};
+
+export const PokemonDetail = forwardRef<HTMLElement, IPokemonDetailProps>(
+  ({ pokemonDetails }, ref) => {
+    const [isFrontPokemon, setIsFrontPokemon] = useState(true);
+    const { selectedPokemonId, setSelectedPokemonId } = useContext(
+      SelectedPokemonContext
     );
 
-    return description.flavor_text;
-  };
+    if (!pokemonDetails) {
+      return <aside ref={ref} className={`${styles.detail}`}></aside>;
+    }
 
-  if (isLoading || !pokemonDetails) {
+    const { pokemon, evolutionChain, species } = pokemonDetails;
+    const description = getFullDescription("fr", species?.flavor_text_entries);
+
     return (
-      <aside className={`${styles.detail} ${justifyCenter}`}>
-        <Image
-          className={styles.loadingBall}
-          src="/pokeball-icon.png"
-          alt="Loading"
-          width={80}
-          height={80}
-        />{" "}
+      <aside ref={ref} className={styles.detail}>
+        <Box w={"100%"} h={"100%"}>
+          <CloseButton
+            className={styles.close}
+            onClick={() => setSelectedPokemonId(-1)}
+          />
+          <Flex w={"100%"} h={180} m={2} justifyContent="center">
+            <img
+              className={
+                getImage(pokemon, isFrontPokemon) === "pokeball.png"
+                  ? styles.imgError
+                  : styles.img
+              }
+              src={getImage(pokemon, isFrontPokemon)}
+              onClick={() => setIsFrontPokemon((isFront) => !isFront)}
+            ></img>
+          </Flex>
+          <h5 className={styles.idPokemon}>#{pokemon.id}</h5>
+          <h4>{pokemon.name}</h4>
+          <div className={styles.types}>
+            {pokemon.types.map((type) => (
+              <Type key={type.type.name} type={type.type.name} />
+            ))}
+          </div>
+          <h4>Pokedex Entry</h4>
+          {description}
+          <h4>ABILITIES</h4>
+          <Abilities abilities={pokemon.abilities} />
+          <Flex w="100%" flexDir={"row"}>
+            <Flex w="100%" flexDir={"column"}>
+              <h4>HEIGHT</h4>
+              <Oval justifyContent="center">{pokemon.height / 10} m</Oval>
+            </Flex>
+            <Flex w="100%" flexDir={"column"}>
+              <h4>WEIGHT</h4>
+              <Oval justifyContent="center">{pokemon.weight / 10} Kg</Oval>
+            </Flex>
+          </Flex>
+          <Flex w="100%" flexDir={"column"}>
+            <h4>BASE EXP</h4>
+            <Oval justifyContent="center">{pokemon.base_experience}</Oval>
+          </Flex>
+          <h4>STATS</h4>
+          <Stats stats={pokemon.stats} />
+          <h4>EVOLUTION</h4>
+          <Evolution evolutions={evolutionChain} />
+        </Box>
       </aside>
     );
   }
-
-  const description = getFullDescription(
-    "fr",
-    pokemonDetails?.species?.flavor_text_entries
-  );
-
-  const { abilities } = pokemonDetails.pokemon;
-
-  return (
-    <aside className={`${styles.detail} ${justifyCenter}`}>
-      <>
-        <img className={styles.img} src={url}></img>
-        <span className={styles.idPokemon}>#{pokemon.id}</span>
-        <h4>{pokemon.name}</h4>
-        <div className={styles.types}>
-          {pokemon.types.map((type) => (
-            <Type key={type.id} type={type.name} />
-          ))}
-        </div>
-        <h4>Pokedex Entry</h4>
-        {description}
-        <h4>ABILITIES</h4>
-        <Abilities abilities={abilities} />
-        <Flex w="100%" flexDir={"row"}>
-          <Flex w="100%" flexDir={"column"}>
-            HEIGHT
-            <Oval justifyContent="center">
-              {pokemonDetails.pokemon.height / 10} m
-            </Oval>
-          </Flex>
-          <Flex w="100%" flexDir={"column"}>
-            WEIGHT
-            <Oval justifyContent="center">
-              {pokemonDetails.pokemon.weight / 10} Kg
-            </Oval>
-          </Flex>
-        </Flex>
-        <Flex w="100%" flexDir={"column"}>
-          BASE EXP
-          <Oval justifyContent="center">
-            {pokemonDetails.pokemon.base_experience}
-          </Oval>
-        </Flex>
-        STATS
-        <Stats stats={pokemonDetails.pokemon.stats} />
-        Evolution
-        <Evolution evolutions={pokemonDetails.evolutionChain} />
-      </>
-    </aside>
-  );
-};
+);

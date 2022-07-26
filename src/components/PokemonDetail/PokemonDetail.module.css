@@ -3,8 +3,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 1;
   background-color: white;
+  flex: 1;
 
   border-radius: 20px;
   box-shadow: #ededed 0 10px 10px;
@@ -14,9 +14,34 @@
   height: calc(100vh - 120px);
   box-shadow: 0 0 10px #ccc9c9;
   text-align: center;
-  padding: 40px;
+  padding: 20px;
   overflow-y: scroll;
   overflow-x: hidden;
+  width: 100%;
+
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+}
+
+.close {
+  position: absolute;
+  display: none;
+}
+
+@media screen and (max-width: 1000px) {
+  .detail {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
+.detail::-webkit-scrollbar {
+  display: none; /* Chrome */
+}
+
+.detail h4 {
+  font-weight: bold;
 }
 
 .justifyCenter {
@@ -24,38 +49,21 @@
 }
 
 .img {
-  height: 200px;
+  height: 180px;
+  object-fit: cover;
   image-rendering: pixelated;
   transition-duration: 100ms;
-  z-index: 9999;
+  cursor: pointer;
 }
 
-.slidesOut {
-  animation: slideOut ease-in-out 0.35s;
-  animation-fill-mode: forwards;
+.imgContainer {
+  display: flex;
+  height: 250px;
+  padding: 20px;
 }
 
-@keyframes slideOut {
-  0% {
-    transform: translate(0px);
-  }
-  100% {
-    transform: translate(700px);
-  }
-}
-
-.slidesIn {
-  animation: slideIn ease-in-out 0.35s;
-  animation-fill-mode: forwards;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translate(700px);
-  }
-  to {
-    transform: translate(0px);
-  }
+.imgError {
+  height: 150px;
 }
 
 .types {
@@ -66,7 +74,6 @@
 }
 
 .idPokemon {
-  font-size: 0.8rem;
   font-weight: bold;
   color: #8f9396;
 }

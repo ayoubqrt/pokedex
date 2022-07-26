@@ -35,13 +35,13 @@ const Ability = ({ ability }: { ability: AbilityElement }) => {
     >
       <Oval
         styles={{
-          border: "2px solid",
-          flexDirection: "row",
+          border: "1px solid",
           borderColor: getBackgroundColor(ability.ability.name),
+          flex: "40%",
         }}
         key={ability.ability.url}
       >
-        <h5>{ability.ability.name}</h5>
+        <h6>{ability.ability.name}</h6>
         {ability.is_hidden && (
           <Image src={"/hide.png"} width={20} height={20} />
         )}

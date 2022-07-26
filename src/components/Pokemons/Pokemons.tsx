@@ -8,48 +8,16 @@ import Image from "next/image";
 import { FilterType } from "@components/Filter/Filter";
 
 interface IPokemonsProps {
-  pokemonsType: string;
+  pokemons: BasicPokemon[];
   onClick: (pokemon: BasicPokemon) => void;
+  isLoading?: boolean;
 }
 
 export const Pokemons: React.FC<IPokemonsProps> = ({
-  pokemonsType,
+  pokemons,
   onClick,
+  isLoading,
 }) => {
-  const {
-    isLoading,
-    error,
-    data: pokemons,
-    isSuccess,
-  } = useQuery(["pokemons"], getPokemonsWithTypes);
-
-  const [filteredPokemons, setfilteredPokemons] = useState<
-    BasicPokemon[] | undefined
-  >(pokemons);
-
-  useEffect(() => {
-    if (!pokemons) return;
-    filterByType(pokemonsType);
-  }, [pokemonsType]);
-
-  useEffect(() => {
-    if (!pokemons) return;
-    setfilteredPokemons(pokemons);
-  }, [pokemons]);
-
-  const filterByType = (type: FilterType) => {
-    if (type === "all") {
-      setfilteredPokemons(pokemons);
-      return;
-    }
-
-    const pokemonsFilteredByType = pokemons?.filter((pokemon) => {
-      return pokemon.types.some((t) => t.name === type);
-    });
-
-    setfilteredPokemons(pokemonsFilteredByType);
-  };
-
   return (
     <div className={styles.pokemons}>
       {isLoading ? (
@@ -60,7 +28,7 @@ export const Pokemons: React.FC<IPokemonsProps> = ({
           src={"/pokeball.png"}
         />
       ) : (
-        filteredPokemons?.map((pokemon) => (
+        pokemons.map((pokemon) => (
           <PokemonCard
             onClick={() => onClick(pokemon)}
             key={pokemon.id}

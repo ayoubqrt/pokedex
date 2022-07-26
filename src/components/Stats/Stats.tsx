@@ -72,9 +72,10 @@ const Stat = ({ stat }: { stat: StatElement }) => {
         styles={{
           flexDirection: "column",
           padding: "5px",
-          backgroundColor: stat.stat.name === "TOT" ? "#88AAEA" : "",
+          width: "fit-content",
         }}
         key={stat.stat.name}
+        backgroundColor={stat.stat.name === "TOT" ? "#88AAEA" : ""}
       >
         <h5
           style={{

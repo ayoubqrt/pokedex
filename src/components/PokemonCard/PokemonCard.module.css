@@ -1,12 +1,11 @@
 .card {
-  min-width: 25%;
+  flex: 1 1 270px;
   margin: 0.7rem;
   background-color: white;
   border-radius: 10px;
   text-align: center;
   padding: 10px;
 
-  flex: 1;
   position: relative;
   cursor: pointer;
   border: 2px solid white;
@@ -36,21 +35,24 @@
   align-items: center;
 }
 
-.pokemonImg {
+.pokemonImg,
+.pokemonImgError {
   top: -55px;
   image-rendering: pixelated;
   position: absolute;
   transition-duration: 100ms;
 }
 
+.pokemonImgError {
+  top: -45px;
+  height: 70px;
+  image-rendering: auto;
+}
+
 .cardTitle {
   font-size: 1.17em;
   padding: 5px;
   font-weight: bold;
-}
-
-.cardTitle:first-letter {
-  text-transform: uppercase;
 }
 
 .types {

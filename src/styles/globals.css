@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
 html,
 body,
 #__next {
@@ -14,9 +16,12 @@ a {
   text-decoration: none;
 }
 
+div {
+  margin: 0;
+}
+
 * {
   box-sizing: border-box;
-  font-family: "Outfit", sans-serif;
 }
 
 h6 {
@@ -24,17 +29,17 @@ h6 {
 }
 
 h4 {
-  color: #011030;
   margin: 5px;
   text-align: center;
   text-transform: capitalize;
 }
 
-h5::first-letter {
+*::first-letter {
   text-transform: capitalize;
 }
 
 h5 {
   margin: 0;
   font-size: 14px;
+  word-break: break-word;
 }

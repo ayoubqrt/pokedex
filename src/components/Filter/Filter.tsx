@@ -1,3 +1,4 @@
+import { Select } from "@chakra-ui/react";
 import { useState } from "react";
 
 interface IFilterProps {
@@ -34,20 +35,24 @@ export const Filter: React.FC<IFilterProps> = ({ onChange }) => {
   const [options, setOptions] = useState<string[]>([]);
 
   const handleChange = (selectedFilter: FilterType) => {
-    setSelectedFilter(selectedFilter);
-    onChange(selectedFilter);
+    const filter = selectedFilter === "" ? "all" : selectedFilter;
+
+    setSelectedFilter(filter);
+    onChange(filter);
   };
 
   return (
-    <select
+    <Select
       value={selectedFilter}
       onChange={(e) => handleChange(e.target.value)}
+      placeholder="Type"
+      size="md"
     >
       {types.map((type) => (
         <option key={type} value={type}>
           {type}
         </option>
       ))}
-    </select>
+    </Select>
   );
 };

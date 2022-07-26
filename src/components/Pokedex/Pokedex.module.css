@@ -1,10 +1,46 @@
-.container {
-  display: flex;
-  flex-direction: row;
-}
-
 .header {
   display: flex;
   flex-direction: column;
   margin-bottom: 60px;
+}
+
+.loadingBall {
+  animation: rotate infinite 1s ease-in-out;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.slidesOut {
+  animation: slideOut ease-in-out 0.35s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translate(0px);
+  }
+  100% {
+    transform: translate(700px);
+  }
+}
+
+.slidesIn {
+  animation: slideIn ease-in-out 0.35s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translate(700px);
+  }
+  to {
+    transform: translate(0px);
+  }
 }

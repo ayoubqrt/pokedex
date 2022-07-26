@@ -5,4 +5,5 @@ export const AbilitiesStyles = style({
   flexDirection: "row",
   justifyContent: "space-between",
   width: "100%",
+  flexWrap: "wrap",
 });
