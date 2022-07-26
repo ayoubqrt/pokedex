@@ -46,6 +46,7 @@ const PokemonEvolution: React.FC<PokemonEvolution> = ({
             {min_level === "unknown" ? "?" : `Lvl ${min_level}`}
           </Oval>
           <Image
+            alt="image"
             onClick={() => setSelectedPokemonId(pokemon.id)}
             className={EvolutionStyle}
             src={pokemon.sprites.front_default ?? ""}

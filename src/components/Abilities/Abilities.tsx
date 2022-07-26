@@ -43,7 +43,7 @@ const Ability = ({ ability }: { ability: AbilityElement }) => {
       >
         <h6>{ability.ability.name}</h6>
         {ability.is_hidden && (
-          <Image src={"/hide.png"} width={20} height={20} />
+          <Image alt="hide" src={"/hide.png"} width={20} height={20} />
         )}
       </Oval>
     </Tooltip>

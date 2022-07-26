@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import { Filter, FilterType } from "@components/Filter/Filter";
 import { PokemonDetail } from "@components/PokemonDetail/PokemonDetail";
 import { Pokemons } from "@components/Pokemons/Pokemons";
-import { InputNumber } from "@components/Range/Range";
+import { InputNumber } from "@components/InputNumber/InputNumber";
 import {
   BasicPokemon,
   getPokemonDetails,
@@ -53,12 +53,11 @@ export const Pokedex: NextPage = () => {
 
   const fakeFetchLoading = async () => {
     const startTime = new Date().getTime();
-
     const result = await getPokemonDetails(selectedPokemonId);
-
     const endTime = new Date().getTime();
 
     const fetchTime = endTime - startTime;
+
     await new Promise((resolve) => setTimeout(resolve, 400 - fetchTime));
 
     return result;
@@ -72,6 +71,7 @@ export const Pokedex: NextPage = () => {
           height={250}
           className={styles.loadingBall}
           src={"/pokeball.png"}
+          alt="pokeball"
         />
       </Flex>
     );

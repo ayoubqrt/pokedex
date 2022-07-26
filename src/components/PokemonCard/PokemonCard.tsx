@@ -1,6 +1,5 @@
 import { Type } from "@components/Type/Type";
 import type { BasicPokemon } from "@hooks/usePokeApi";
-import Image from "next/image";
 import { useState } from "react";
 import styles from "./PokemonCard.module.css";
 
@@ -22,9 +21,9 @@ export const PokemonCard: React.FC<ICardProps> = ({ pokemon, onClick }) => {
       className={`${styles.card} ${styles.container} ${styles.center}`}
     >
       <img
+        alt="pokemon"
         className={`${isError ? styles.pokemonImgError : styles.pokemonImg}`}
         src={img}
-        alt="pokemon"
         onError={() => {
           setIsError(true);
           setImg("pokeball.png");
