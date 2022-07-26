@@ -1,20 +1,13 @@
 import { Type } from "@components/Type/Type";
-import {
-  BasicPokemon,
-  getPokemonDetails,
-  PokemonDetails,
-} from "@hooks/usePokeApi";
+import { PokemonDetails } from "@hooks/usePokeApi";
 import styles from "./PokemonDetail.module.css";
-import Image from "next/image";
-import { useQuery } from "react-query";
 import { Abilities } from "@components/Abilities/Abilities";
 import { Box, Flex } from "@chakra-ui/react";
 import { Stats } from "@components/Stats/Stats";
 import { Oval } from "@components/Oval/Oval";
 import { Evolution } from "@components/Evolution/Evolution";
 import { Pokemon, PokemonSpeciesFlavorTextEntry } from "pokedex-promise-v2";
-import { forwardRef, Ref, useContext, useEffect, useState } from "react";
-import { useMeasure, useWindowSize } from "react-use";
+import { forwardRef, useContext, useEffect, useState } from "react";
 import { SelectedPokemonContext } from "@components/Pokedex/Pokedex";
 import { CloseButton } from "@chakra-ui/react";
 
