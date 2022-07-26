@@ -22,6 +22,7 @@ export const Pokemons: React.FC<IPokemonsProps> = ({
     <div className={styles.pokemons}>
       {isLoading ? (
         <Image
+          alt="pokemonLoading"
           width={300}
           height={300}
           className={styles.loadingBall}
