@@ -1,5 +1,5 @@
 import { getBackgroundColor } from "@components/Type/Type";
-import { MultiValueProps, Select } from "chakra-react-select";
+import { ChakraStylesConfig, MultiValueProps, Select } from "chakra-react-select";
 import { useState } from "react";
 
 interface IFilterProps {
@@ -32,24 +32,32 @@ const types = [
 export type FilterType = typeof types[number];
 
 export const Filter: React.FC<IFilterProps> = ({ onChange, className }) => {
-  const [selectedFilter, setSelectedFilter] = useState<string[]>([]);
-  const [options, setOptions] = useState<string[]>([]);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
   const handleChange = (options: string[]) => {
-    setSelectedFilter(options);
+    setSelectedFilters(options);
     onChange(options);
+  };
+
+  const chakraStyles: ChakraStylesConfig = {
+    control: (provided) => ({
+      ...provided,
+      background: "white",
+    }),
   };
 
   return (
     <Select
-      className={className}
+      closeMenuOnSelect={false}
+      chakraStyles={chakraStyles}
+      styles={{ valueContainer: (provided) => ({ ...provided, background: "red" }) }}
       isMulti
       placeholder="Type"
       colorScheme="messenger"
       onChange={(values) => handleChange(values.map((v) => v.value))}
       options={types.map((type) => ({
         value: type,
-        label: type,
+        label: type[0].toUpperCase() + type.slice(1),
       }))}
     />
   );

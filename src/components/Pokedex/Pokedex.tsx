@@ -1,5 +1,5 @@
-import { Button, Flex, FormLabel, Switch } from "@chakra-ui/react";
-import { Filter, FilterType } from "@components/Filter/Filter";
+import { Box, Button, Flex, FormLabel, Switch } from "@chakra-ui/react";
+import { Filter, FilterType } from "@components/Dropdown/Dropdown";
 import { PokemonDetail } from "@components/PokemonDetail/PokemonDetail";
 import { Pokemons } from "@components/Pokemons/Pokemons";
 import { InputNumber } from "@components/InputNumber/InputNumber";
@@ -96,8 +96,7 @@ export const Pokedex: NextPage = () => {
     if (!pokemons) {
       return;
     }
-
-    let pokemonsFiltered = isAscending ? pokemons : pokemons.reverse();
+    let pokemonsFiltered = isAscending ? [...pokemons] : [...pokemons].reverse();
 
     if (selectedTypes.length > 0) {
       pokemonsFiltered = filterByType(selectedTypes, pokemonsFiltered);
@@ -106,7 +105,7 @@ export const Pokedex: NextPage = () => {
     pokemonsFiltered = filterByName(searchedPokemon, pokemonsFiltered);
 
     setfilteredPokemons(pokemonsFiltered);
-  }, [selectedTypes, searchedPokemon, isAscending]);
+  }, [isAscending, selectedTypes, searchedPokemon]);
 
   if (isLoadingPokemons) {
     return (
@@ -130,7 +129,9 @@ export const Pokedex: NextPage = () => {
     setTo((to) => to + 50);
   };
 
-  const isThereMorePokemons = to < filteredPokemons.length;
+  const handleSwitchChange = () => {
+    setIsAscending((isAscending) => !isAscending);
+  };
 
   const AnimatedPokemonDetail: React.FC<{
     isLoading: boolean;
@@ -165,10 +166,11 @@ export const Pokedex: NextPage = () => {
         />
         <Flex justifyContent="space-between" alignItems="center" flexDir="row">
           <Flex alignItems="center">
-            <FormLabel htmlFor="switch">Ascending</FormLabel>
+            <Box marginRight={1}>Ascending</Box>
             <Switch
+              isChecked={isAscending}
               id="switch"
-              onChange={(e) => setIsAscending(e.target.checked)}
+              onChange={() => handleSwitchChange()}
               size="md"
             />
           </Flex>
@@ -209,7 +211,7 @@ export const Pokedex: NextPage = () => {
       <Flex justifyContent="center">
         <Button
           colorScheme="red"
-          visibility={isThereMorePokemons ? "visible" : "hidden"}
+          visibility={to < filteredPokemons.length ? "visible" : "hidden"}
           onClick={() => showMorePokemons()}
         >
           Show more !

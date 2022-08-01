@@ -25,10 +25,8 @@ const getImage = (pokemon: Pokemon, isFrontImage: boolean) => {
   }
 
   const image = isFrontImage
-    ? pokemon.sprites.versions["generation-v"]["black-white"].animated
-        .front_default
-    : pokemon.sprites.versions["generation-v"]["black-white"].animated
-        .back_default;
+    ? pokemon.sprites.versions["generation-v"]["black-white"].animated.front_default
+    : pokemon.sprites.versions["generation-v"]["black-white"].animated.back_default;
 
   return image ? image : pokemon.sprites.front_default ?? "pokeball.png";
 };
@@ -37,13 +35,9 @@ const getFullDescription = (
   language: string,
   descriptions: PokemonSpeciesFlavorTextEntry[]
 ) => {
-  const description = descriptions.find(
-    (des) => des.language.name === language
-  );
+  const description = descriptions.find((des) => des.language.name === language);
 
-  return description
-    ? description.flavor_text
-    : descriptions.find((des) => des.language.name === "en")?.flavor_text;
+  return description ? description.flavor_text.replace(/\f/, "") : "";
 };
 
 const PokemonDetailRef: React.ForwardRefRenderFunction<
@@ -51,24 +45,19 @@ const PokemonDetailRef: React.ForwardRefRenderFunction<
   IPokemonDetailProps
 > = ({ pokemonDetails }, ref) => {
   const [isFrontPokemon, setIsFrontPokemon] = useState(true);
-  const { selectedPokemonId, setSelectedPokemonId } = useContext(
-    SelectedPokemonContext
-  );
+  const { selectedPokemonId, setSelectedPokemonId } = useContext(SelectedPokemonContext);
 
   if (!pokemonDetails) {
     return <aside ref={ref} className={`${styles.detail}`}></aside>;
   }
 
   const { pokemon, evolutionChain, species } = pokemonDetails;
-  const description = getFullDescription("fr", species?.flavor_text_entries);
+  const description = getFullDescription("en", species?.flavor_text_entries);
 
   return (
     <aside ref={ref} className={styles.detail}>
       <Box w={"100%"} h={"100%"}>
-        <CloseButton
-          className={styles.close}
-          onClick={() => setSelectedPokemonId(-1)}
-        />
+        <CloseButton className={styles.close} onClick={() => setSelectedPokemonId(-1)} />
         <Flex w={"100%"} h={180} m={2} justifyContent="center">
           <img
             alt="front"

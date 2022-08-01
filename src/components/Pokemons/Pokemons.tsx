@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import styles from "./Pokemons.module.css";
 import Image from "next/image";
-import { FilterType } from "@components/Filter/Filter";
+import { FilterType } from "@components/Dropdown/Dropdown";
 
 interface IPokemonsProps {
   pokemons: BasicPokemon[];
@@ -13,11 +13,7 @@ interface IPokemonsProps {
   isLoading?: boolean;
 }
 
-export const Pokemons: React.FC<IPokemonsProps> = ({
-  pokemons,
-  onClick,
-  isLoading,
-}) => {
+export const Pokemons: React.FC<IPokemonsProps> = ({ pokemons, onClick, isLoading }) => {
   return (
     <div className={styles.pokemons}>
       {isLoading ? (
