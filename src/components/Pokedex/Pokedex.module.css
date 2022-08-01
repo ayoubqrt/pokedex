@@ -44,3 +44,15 @@
     transform: translate(0px);
   }
 }
+
+.margin {
+  margin: 5px;
+}
+
+.marginBottom {
+  margin-bottom: 5px;
+}
+
+.bgWhite {
+  background-color: white;
+}

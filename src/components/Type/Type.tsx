@@ -1,10 +1,11 @@
+import { Box } from "@chakra-ui/react";
 import styles from "./Type.module.css";
 
 interface ITypeProps {
   type: string;
 }
 
-export const Type: React.FC<ITypeProps> = ({ type }) => {
+export const getBackgroundColor = (type: string) => {
   const typeColors: Record<string, string> = {
     normal: "#BCBCAC",
     fighting: "#BC5442",
@@ -27,16 +28,13 @@ export const Type: React.FC<ITypeProps> = ({ type }) => {
     shadow: "#0E2E4C",
   };
 
-  const getBackgroundColor = (type: string) => {
-    return typeColors[type];
-  };
+  return typeColors[type];
+};
 
+export const Type: React.FC<ITypeProps> = ({ type }) => {
   return (
-    <div
-      className={styles.type}
-      style={{ backgroundColor: getBackgroundColor(type) }}
-    >
+    <Box bg={getBackgroundColor(type)} className={styles.type}>
       {type}
-    </div>
+    </Box>
   );
 };

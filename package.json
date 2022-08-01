@@ -16,6 +16,7 @@
     "@vanilla-extract/css": "^1.7.2",
     "@vanilla-extract/next-plugin": "^2.0.2",
     "@vanilla-extract/sprinkles": "^1.4.1",
+    "chakra-react-select": "^4.1.4",
     "framer-motion": "^6.5.1",
     "next": "12.1.6",
     "pokedex-promise-v2": "^4.0.0",

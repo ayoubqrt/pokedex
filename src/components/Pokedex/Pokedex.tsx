@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Button, Flex, FormLabel, Switch } from "@chakra-ui/react";
 import { Filter, FilterType } from "@components/Filter/Filter";
 import { PokemonDetail } from "@components/PokemonDetail/PokemonDetail";
 import { Pokemons } from "@components/Pokemons/Pokemons";
@@ -15,15 +15,44 @@ import { createContext, createRef, useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { animated, config, useSpring, useTransition } from "react-spring";
 import styles from "./Pokedex.module.css";
+import { useKey, useScroll } from "react-use";
+import { Search } from "@components/Search/Search";
 
 export const SelectedPokemonContext = createContext<any>(null);
 
+const filterByType = (types: FilterType[], pokemons: BasicPokemon[]): BasicPokemon[] => {
+  if (types.some((t) => t === "all")) {
+    return pokemons;
+  }
+
+  const pokemonsFilteredByType = pokemons?.filter((pokemon) => {
+    return pokemon.types.some((t) => types.find((type) => t.name === type));
+  });
+
+  return pokemonsFilteredByType;
+};
+
+const filterByName = (name: string, pokemons: BasicPokemon[]): BasicPokemon[] => {
+  if (name === "") {
+    return pokemons;
+  }
+
+  const pokemonsFilteredByName = pokemons?.filter((pokemon) => {
+    return pokemon.name.includes(name);
+  });
+
+  return pokemonsFilteredByName;
+};
+
 export const Pokedex: NextPage = () => {
-  const [selectedType, setSelectedType] = useState<FilterType>("all");
+  const [selectedTypes, setSelectedTypes] = useState<FilterType[]>([]);
   const [selectedPokemonId, setSelectedPokemonId] = useState<number>(-1);
   const [filteredPokemons, setfilteredPokemons] = useState<BasicPokemon[]>([]);
   const [from, setFrom] = useState<number>(0);
   const [to, setTo] = useState<number>(50);
+  const [searchedPokemon, setSearchedPokemon] = useState<string>("");
+  const [isAscending, setIsAscending] = useState<boolean>(true);
+  useKey("Escape", () => setSelectedPokemonId(-1));
 
   const {
     isLoading: isLoadingPokemons,
@@ -63,6 +92,22 @@ export const Pokedex: NextPage = () => {
     return result;
   };
 
+  useEffect(() => {
+    if (!pokemons) {
+      return;
+    }
+
+    let pokemonsFiltered = isAscending ? pokemons : pokemons.reverse();
+
+    if (selectedTypes.length > 0) {
+      pokemonsFiltered = filterByType(selectedTypes, pokemonsFiltered);
+    }
+
+    pokemonsFiltered = filterByName(searchedPokemon, pokemonsFiltered);
+
+    setfilteredPokemons(pokemonsFiltered);
+  }, [selectedTypes, searchedPokemon, isAscending]);
+
   if (isLoadingPokemons) {
     return (
       <Flex justifyContent={"center"} alignItems="center" w={"100%"} h={"100%"}>
@@ -81,18 +126,11 @@ export const Pokedex: NextPage = () => {
     return <></>;
   }
 
-  const filterByType = (type: FilterType) => {
-    if (type === "all") {
-      setfilteredPokemons(pokemons);
-      return;
-    }
-
-    const pokemonsFilteredByType = pokemons?.filter((pokemon) => {
-      return pokemon.types.some((t) => t.name === type);
-    });
-
-    setfilteredPokemons(pokemonsFilteredByType);
+  const showMorePokemons = () => {
+    setTo((to) => to + 50);
   };
+
+  const isThereMorePokemons = to < filteredPokemons.length;
 
   const AnimatedPokemonDetail: React.FC<{
     isLoading: boolean;
@@ -109,16 +147,46 @@ export const Pokedex: NextPage = () => {
   };
 
   return (
-    // @ts-ignore
     <div>
       <header className={styles.header}>
-        <Filter type="Type" onChange={(val) => filterByType(val)} />
-        <InputNumber
-          title="From"
-          value={from}
-          onChange={(val) => setFrom(val)}
+        <Search
+          className={styles.marginBottom}
+          value={searchedPokemon}
+          onChange={(val) => {
+            setSearchedPokemon(val);
+          }}
         />
-        <InputNumber title="To" value={to} onChange={(val) => setTo(val)} />
+        <Filter
+          className={`${styles.marginBottom} ${styles.bgWhite}`}
+          type="Type"
+          onChange={(val) => {
+            setSelectedTypes(val);
+          }}
+        />
+        <Flex justifyContent="space-between" alignItems="center" flexDir="row">
+          <Flex alignItems="center">
+            <FormLabel htmlFor="switch">Ascending</FormLabel>
+            <Switch
+              id="switch"
+              onChange={(e) => setIsAscending(e.target.checked)}
+              size="md"
+            />
+          </Flex>
+          <Flex>
+            <InputNumber
+              className={styles.margin}
+              title="From"
+              value={from}
+              onChange={(val) => setFrom(val)}
+            />
+            <InputNumber
+              className={styles.margin}
+              title="To"
+              value={to}
+              onChange={(val) => setTo(val)}
+            />
+          </Flex>
+        </Flex>
       </header>
       <Flex flexDir={"row"} justifyContent={"space-around"}>
         <Pokemons
@@ -137,6 +205,15 @@ export const Pokedex: NextPage = () => {
             />
           </SelectedPokemonContext.Provider>
         )}
+      </Flex>
+      <Flex justifyContent="center">
+        <Button
+          colorScheme="red"
+          visibility={isThereMorePokemons ? "visible" : "hidden"}
+          onClick={() => showMorePokemons()}
+        >
+          Show more !
+        </Button>
       </Flex>
     </div>
   );
