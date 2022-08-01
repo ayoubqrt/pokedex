@@ -14,7 +14,7 @@ export const Search: React.FC<ISearchProps> = ({ value, className, onChange }) =
         bg="white"
         onChange={(e) => onChange(e.target.value)}
         value={value}
-        type="tel"
+        type="text"
         placeholder="Search your pokemon"
       />
     </InputGroup>
