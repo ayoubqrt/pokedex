@@ -54,6 +54,7 @@ export const Filter: React.FC<IFilterProps> = ({ onChange, className }) => {
       isMulti
       placeholder="Type"
       colorScheme="messenger"
+      // @ts-ignore
       onChange={(values) => handleChange(values.map((v) => v.value))}
       options={types.map((type) => ({
         value: type,
