@@ -109,7 +109,7 @@ export const Pokedex: NextPage = () => {
 
   if (isLoadingPokemons) {
     return (
-      <Flex justifyContent={"center"} alignItems="center" w={"100%"} h={"100%"}>
+      <Flex justifyContent={"center"} alignItems="center" w={"100%"} h={"100vh"}>
         <Image
           width={250}
           height={250}
