@@ -8,3 +8,10 @@
   display: flex;
   flex-direction: column;
 }
+
+/* mobile */
+@media (max-width: 768px) {
+  .app {
+    padding: 20px;
+  }
+}
