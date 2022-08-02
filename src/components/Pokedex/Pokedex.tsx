@@ -154,7 +154,12 @@ export const Pokedex: NextPage = () => {
           className={styles.marginBottom}
           value={searchedPokemon}
           onChange={(val) => {
-            setSearchedPokemon(val);
+            if (!val) {
+              setSearchedPokemon(val);
+              return;
+            }
+
+            setSearchedPokemon(val.toLowerCase());
           }}
         />
         <Filter
