@@ -24,37 +24,30 @@ export const Evolution: React.FC<IEvolutionProps> = ({ evolutions }) => {
   );
 };
 
-const PokemonEvolution: React.FC<PokemonEvolution> = ({
-  pokemon,
-  min_level,
-}) => {
-  const { selectedPokemonId, setSelectedPokemonId } = useContext(
-    SelectedPokemonContext
-  );
+const PokemonEvolution: React.FC<PokemonEvolution> = ({ pokemon, min_level }) => {
+  const { selectedPokemonId, setSelectedPokemonId } = useContext(SelectedPokemonContext);
 
   return (
     <>
-      {min_level !== 1 && (
-        <Flex alignItems={"center"} flexDir={"row"}>
-          <Oval
-            styles={{
-              border: "1px solid grey",
-              padding: "4px 10px",
-              height: "fit-content",
-            }}
-          >
-            {min_level === "unknown" ? "?" : `Lvl ${min_level}`}
-          </Oval>
-          <Image
-            alt="image"
-            onClick={() => setSelectedPokemonId(pokemon.id)}
-            className={EvolutionStyle}
-            src={pokemon.sprites.front_default ?? ""}
-            height={100}
-            width={100}
-          />
-        </Flex>
-      )}
+      <Flex alignItems={"center"} flexDir={"row"}>
+        <Oval
+          styles={{
+            border: "1px solid grey",
+            padding: "4px 10px",
+            height: "fit-content",
+          }}
+        >
+          {min_level === "unknown" ? "?" : `Lvl ${min_level}`}
+        </Oval>
+        <Image
+          alt="image"
+          onClick={() => setSelectedPokemonId(pokemon.id)}
+          className={EvolutionStyle}
+          src={pokemon.sprites.front_default ?? ""}
+          height={100}
+          width={100}
+        />
+      </Flex>
     </>
   );
 };
