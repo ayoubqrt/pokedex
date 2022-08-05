@@ -10,6 +10,7 @@ import { Pokemon, PokemonSpeciesFlavorTextEntry } from "pokedex-promise-v2";
 import { forwardRef, useContext, useEffect, useState } from "react";
 import { SelectedPokemonContext } from "@components/Pokedex/Pokedex";
 import { CloseButton } from "@chakra-ui/react";
+import { animated, useSpring } from "react-spring";
 
 interface IPokemonDetailProps {
   pokemonDetails: PokemonDetails | undefined;
@@ -104,4 +105,18 @@ const PokemonDetailRef: React.ForwardRefRenderFunction<
   );
 };
 
-export const PokemonDetail = forwardRef(PokemonDetailRef);
+const PokemonDetail = forwardRef(PokemonDetailRef);
+
+export const AnimatedPokemonDetail: React.FC<{
+  isLoading: boolean;
+  pokemonDetails: PokemonDetails | undefined;
+}> = ({ isLoading, pokemonDetails }) => {
+  const AnimatedCard = animated(PokemonDetail);
+
+  const style = useSpring({
+    to: { x: isLoading ? "50vw" : "0" },
+    from: { x: isLoading ? "0" : "50vw" },
+  });
+
+  return <AnimatedCard pokemonDetails={pokemonDetails} style={style} />;
+};

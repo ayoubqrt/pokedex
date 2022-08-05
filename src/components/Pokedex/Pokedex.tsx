@@ -1,22 +1,16 @@
-import { Box, Button, Flex, FormLabel, Switch } from "@chakra-ui/react";
+import { Box, Button, Flex, Switch } from "@chakra-ui/react";
 import { Filter, FilterType } from "@components/Dropdown/Dropdown";
-import { PokemonDetail } from "@components/PokemonDetail/PokemonDetail";
-import { Pokemons } from "@components/Pokemons/Pokemons";
 import { InputNumber } from "@components/InputNumber/InputNumber";
-import {
-  BasicPokemon,
-  getPokemonDetails,
-  getPokemonsWithTypes,
-  PokemonDetails,
-} from "@hooks/usePokeApi";
+import { AnimatedPokemonDetail } from "@components/PokemonDetail/PokemonDetail";
+import { Pokemons } from "@components/Pokemons/Pokemons";
+import { Search } from "@components/Search/Search";
+import { BasicPokemon, getPokemonDetails, getPokemonsWithTypes } from "@hooks/usePokeApi";
 import { NextPage } from "next";
 import Image from "next/image";
-import { createContext, createRef, useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { animated, config, useSpring, useTransition } from "react-spring";
+import { useKey } from "react-use";
 import styles from "./Pokedex.module.css";
-import { useKey, useScroll } from "react-use";
-import { Search } from "@components/Search/Search";
 
 export const SelectedPokemonContext = createContext<any>(null);
 
@@ -131,20 +125,6 @@ export const Pokedex: NextPage = () => {
 
   const handleSwitchChange = () => {
     setIsAscending((isAscending) => !isAscending);
-  };
-
-  const AnimatedPokemonDetail: React.FC<{
-    isLoading: boolean;
-    pokemonDetails: PokemonDetails | undefined;
-  }> = ({ isLoading, pokemonDetails }) => {
-    const AnimatedCard = animated(PokemonDetail);
-
-    const style = useSpring({
-      to: { x: isLoading ? "50vw" : "0" },
-      from: { x: isLoading ? "0" : "50vw" },
-    });
-
-    return <AnimatedCard pokemonDetails={pokemonDetails} style={style} />;
   };
 
   return (
