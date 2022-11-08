@@ -16,8 +16,12 @@ export const PokemonCard: React.FC<ICardProps> = ({ pokemon, onClick }) => {
   const [isError, setIsError] = useState(false);
 
   return (
-    <div
-      onClick={() => onClick()}
+    <a
+      href=""
+      onClick={(event) => {
+        event.preventDefault();
+        onClick();
+      }}
       className={`${styles.card} ${styles.container} ${styles.center}`}
     >
       <img
@@ -36,6 +40,6 @@ export const PokemonCard: React.FC<ICardProps> = ({ pokemon, onClick }) => {
           <Type key={type.id} type={type.name} />
         ))}
       </div>
-    </div>
+    </a>
   );
 };
