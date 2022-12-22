@@ -39,8 +39,7 @@ const PokemonEvolution: React.FC<PokemonEvolution> = ({ pokemon, min_level }) =>
         >
           {min_level === "unknown" ? "?" : `Lvl ${min_level}`}
         </Oval>
-        <a
-          href=""
+        <button
           onClick={(event) => {
             event.preventDefault();
             setSelectedPokemonId(pokemon.id);
@@ -53,7 +52,7 @@ const PokemonEvolution: React.FC<PokemonEvolution> = ({ pokemon, min_level }) =>
             height={100}
             width={100}
           />
-        </a>
+        </button>
       </Flex>
     </>
   );

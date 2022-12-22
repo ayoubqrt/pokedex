@@ -130,6 +130,7 @@ export const Pokedex: NextPage = () => {
   return (
     <div>
       <header className={styles.header}>
+        <h1>Pokedex</h1>
         <Search
           className={styles.marginBottom}
           value={searchedPokemon}

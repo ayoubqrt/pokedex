@@ -1,5 +1,6 @@
 import { Type } from "@components/Type/Type";
 import type { BasicPokemon } from "@hooks/usePokeApi";
+import Image from "next/future/image";
 import { useState } from "react";
 import styles from "./PokemonCard.module.css";
 
@@ -16,16 +17,17 @@ export const PokemonCard: React.FC<ICardProps> = ({ pokemon, onClick }) => {
   const [isError, setIsError] = useState(false);
 
   return (
-    <a
-      href=""
+    <button
       onClick={(event) => {
         event.preventDefault();
         onClick();
       }}
       className={`${styles.card} ${styles.container} ${styles.center}`}
     >
-      <img
+      <Image
         alt="pokemon"
+        width={96}
+				height={96}
         className={`${isError ? styles.pokemonImgError : styles.pokemonImg}`}
         src={img}
         onError={() => {
@@ -40,6 +42,6 @@ export const PokemonCard: React.FC<ICardProps> = ({ pokemon, onClick }) => {
           <Type key={type.id} type={type.name} />
         ))}
       </div>
-    </a>
+    </button>
   );
 };
